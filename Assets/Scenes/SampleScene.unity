@@ -934,9 +934,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerController
   _characterController: {fileID: 1355985833}
   _playerCamera: {fileID: 301579518}
-  _maxWalkSpeed: 8
-  _maxSprintSpeed: 15
-  _acceleration: 10
+  _maxWalkSpeed: 5
+  _maxSprintSpeed: 10
+  _acceleration: 5
   _gravity: -10
   _jumpHeight: 1
 --- !u!143 &1355985833
