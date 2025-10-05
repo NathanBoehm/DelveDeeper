@@ -58,6 +58,7 @@ namespace Managers
             {
                 Instance = this;
             }
+            DontDestroyOnLoad(this.gameObject);
         }
 
         private void Start()
