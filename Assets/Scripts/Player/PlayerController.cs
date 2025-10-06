@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Managers;
 using System;
+using EditorAttributes;
 
 
 namespace Player
@@ -11,91 +12,113 @@ namespace Player
     public class PlayerController : MonoBehaviour
     {
         //Required Components
-        [SerializeField]
+        [SerializeField, Required, HideProperty]
         private CharacterController _characterController;
 
-        [SerializeField]
+        [SerializeField, Required, HideProperty]
         private CinemachineCamera _playerCamera;
+
+        [SerializeField, Required, HideProperty]
+        private GameObject _playerGameObject;
+
+        [SerializeField, Required, HideProperty]
+        private GameObject _cameraTrackingTarget;
+
+        [SerializeField, Required, HideProperty]
+        private Animator _animator;
+
+        [SerializeField, FoldoutGroup("Requried Components", nameof(_characterController), nameof(_playerCamera), nameof(_playerGameObject), nameof(_cameraTrackingTarget), nameof(_animator))]
+        private EditorAttributes.Void RequiredComponentsGroup;
 
 
         //Grounded Movement Fields
-        [SerializeField]
-        private float _maxWalkSpeed = 8.0f;
+        public float CurrentSpeed { get; private set; } = 0.0f;
 
-        [SerializeField]
-        private float _maxSprintSpeed = 15.0f;
+        [SerializeField, HideProperty]
+        private float _maxWalkSpeed = 5.0f;
+        [SerializeField, HideProperty]
+        private float _maxSprintSpeed = 10.0f;
+        [SerializeField, HideProperty]
+        private float _acceleration = 5.0f;
 
-        [SerializeField]
-        private float _acceleration = 10.0f;
+        [SerializeField, FoldoutGroup("Movement", nameof(_maxWalkSpeed), nameof(_maxSprintSpeed), nameof(_acceleration))]
+        private EditorAttributes.Void MovementFielsGroup;
 
         private float _currentSpeedForward = 0.0f;
-        public float CurrentSpeedForward { get { return _currentSpeedForward; } private set { _currentSpeedForward = value; } }
-
         private float _currentSpeedRight = 0.0f;
-        public float CurrentSpeedRight { get { return _currentSpeedRight; } private set { _currentSpeedRight = value; } }
 
-        public float CurrentSpeed { get; private set; } = 0.0f;
+
+        [SerializeField]
+        private float _panAcceleration = 10.0f;
 
 
         //Jump Movement Fields
-        [SerializeField]
-        private float _gravity = -10.0f;
-
-        [SerializeField]
-        private float _jumpHeight = 2.0f;
-
         public Vector3 JumpDirection { get; private set; } = Vector3.zero;
-
         public bool IsJumping { get; private set; } = false;
-
-        private float _verticalVelocity;
 
         private const float TERMINAL_VELOCITY = -50.0f;
 
-        private bool GhostInputsHandled = false;
+        [SerializeField]
+        private float _gravity = -10.0f;
+        [SerializeField]
+        private float _jumpHeight = 1.0f;
 
+        private float _verticalVelocity;
+        [SerializeField]
+        private bool enabledMovement;
 
         public event Action PlayerLanded;
         public event Action PlayerJumped;
 
-        private void OnEnable()
-        {
-            //ControlInputManagerV2.Instance.EnableCharacterControls();
-        }
-
-        private void OnDisable()
-        {
-            //ControlInputManagerV2.Instance.EnableUIControls();
-        }
 
         private void Awake()
         {
             if (_characterController == null)
                 _characterController = GetComponent<CharacterController>();
-
-            if (_playerCamera == null)
-                throw new MissingReferenceException("Character controller missing playe camera.");
-
-            //MovePlayerAlias = MovePlayerV2;
         }
 
-        // Start is called before the first frame update
         private void Start()
         {
-            InputSystem.ResetDevice(Keyboard.current);
-            InputSystem.ResetDevice(Joystick.current);
+            ControlInputManager.Instance.ReadyWeaponInput.action.performed += ReadyWeapon;
+            ControlInputManager.Instance.AttackInput.action.performed += Attack;
         }
 
-        // Update is called once per frame
+        private void ReadyWeapon(InputAction.CallbackContext context)
+        {
+            _animator.SetBool("WeaponReady", !_animator.GetBool("WeaponReady"));
+        }
+
+        private void Attack(InputAction.CallbackContext context)
+        {
+            Debug.Log("Attack perrformed");
+            if (!_animator.GetBool("WeaponReady"))
+            {
+                _animator.SetBool("WeaponReady", true);
+                Debug.Log("Weapon not ready");
+                return;
+            }
+            _animator.SetTrigger("Attack");
+        }
+
         private void Update()
         {
-            //MovePlayerAlias();
             MovePlayer();
             JumpAndFall();
+            AlignPlayerWithCamera();
         }
 
-        private void LateUpdate()
+        private void AlignPlayerWithCamera()
         {
+            //var yRotateionDegrees = Mouse.current.delta.x.ReadValue();
+            //_playerGameObject.AddLerpedEulerRotationY(yRotateionDegrees * _panAcceleration, Time.deltaTime);
+
+            _playerGameObject.SetEulerRotationY(_playerCamera.transform.rotation.eulerAngles.y);
+
+            /*var cameraForward = Camera.main.transform.forward;
+            cameraForward.y = 0;
+            cameraForward.Normalize();
+
+            _playerGameObject.transform.forward = cameraForward;*/
         }
 
         /*private void MovePlayer()
@@ -143,8 +166,10 @@ namespace Player
 
         private void MovePlayer()
         {
+            if (!enabledMovement)
+                return;
+
             Vector2 movementInputs = ControlInputManager.Instance.MovementInput.action.ReadValue<Vector2>();
-            Debug.Log(movementInputs);
 
             float targetSpeedForward = CalculateTargetForwardSpeed(movementInputs.y);
             float targetSpeedRight = CalculateTargetHorizontalSpeed(movementInputs.x);
@@ -246,20 +271,6 @@ namespace Player
                     _verticalVelocity += _gravity * Time.deltaTime;
             }
         }
-
-        /*public void ToggleMovementType()
-        {
-            if (MovePlayerAlias == MovePlayer)
-            {
-                MovePlayerAlias = MovePlayerV2;
-                Debug.Log("Movement Function changed to V2");
-            }
-            else
-            {
-                MovePlayerAlias = MovePlayer;
-                Debug.Log("Movement Function changed to V1");
-            }
-        }*/
     }
 
     public static class CustomExtensions

@@ -11,14 +11,50 @@ namespace Managers
         public static ControlInputManager Instance { get; private set; }
 
         //Movement Input
-        [Required]
+        [Required, HideProperty]
         public InputActionReference MovementInput;
-        [Required]
+        [Required, HideProperty]
         public InputActionReference LookInput;
-        [Required]
+        [Required, HideProperty]
         public InputActionReference SprintInput;
-        [Required]
+        [Required, HideProperty]
         public InputActionReference JumpInput;
+
+        //InteractionInput
+        [Required, HideProperty]
+        public InputActionReference AttackInput;
+        [Required, HideProperty]
+        public InputActionReference ReadyWeaponInput;
+        [Required, HideProperty]
+        public InputActionReference InteractInput;
+
+
+        //UI Controls
+        [Required, HideProperty]
+        public InputActionReference Navigate;
+        [Required, HideProperty]
+        public InputActionReference Submit;
+        [Required, HideProperty]
+        public InputActionReference Cancel;
+        [Required, HideProperty]
+        public InputActionReference Point;
+        [Required, HideProperty]
+        public InputActionReference Click;
+        [Required, HideProperty]
+        public InputActionReference RightClick;
+        [Required, HideProperty]
+        public InputActionReference MiddleClick;
+        [Required, HideProperty]
+        public InputActionReference ScrollWheel;
+
+        [SerializeField, TabGroup(nameof(MovementInputs), nameof(InteractionInputs), nameof(UIInputs))]
+        private Void PlayerInputsTabGroup;
+        [SerializeField, HideInInspector, VerticalGroup(nameof(MovementInput), nameof(LookInput), nameof(SprintInput), nameof(JumpInput))]
+        private Void MovementInputs;
+        [SerializeField, HideInInspector, VerticalGroup(nameof(AttackInput), nameof(ReadyWeaponInput), nameof(InteractInput))]
+        private Void InteractionInputs;
+        [SerializeField, HideInInspector, VerticalGroup(nameof(Navigate), nameof(Submit), nameof(Cancel), nameof(Point), nameof(Click), nameof(RightClick), nameof(MiddleClick), nameof(ScrollWheel))]
+        private Void UIInputs;
 
         //UI Input
         //[Required]
@@ -94,6 +130,8 @@ namespace Managers
             if (type == ControlType.Character) LookInput.action.Enable(); else LookInput.action.Disable();
             if (type == ControlType.Character) SprintInput.action.Enable(); else SprintInput.action.Disable();
             if (type == ControlType.Character) JumpInput.action.Enable(); else JumpInput.action.Disable();
+            if (type == ControlType.Character) AttackInput.action.Enable(); else AttackInput.action.Disable();
+            if (type == ControlType.Character) ReadyWeaponInput.action.Enable(); else ReadyWeaponInput.action.Disable();
             //if (type == ControlType.Character) InteractInput.action.Enable(); else InteractInput.action.Disable();
             //if (type == ControlType.Character) ClickInput.action.Enable(); else ClickInput.action.Disable();
             if (type == ControlType.Character)
@@ -101,6 +139,15 @@ namespace Managers
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
             }
+
+            if (type == ControlType.UI) Navigate.action.Enable(); else Navigate.action.Disable();
+            if (type == ControlType.UI) Submit.action.Enable(); else Submit.action.Disable();
+            if (type == ControlType.UI) Cancel.action.Enable(); else Cancel.action.Disable();
+            if (type == ControlType.UI) Point.action.Enable(); else Point.action.Disable();
+            if (type == ControlType.UI) Click.action.Enable(); else Click.action.Disable();
+            if (type == ControlType.UI) RightClick.action.Enable(); else RightClick.action.Disable();
+            if (type == ControlType.UI) MiddleClick.action.Enable(); else MiddleClick.action.Disable();
+            if (type == ControlType.UI) ScrollWheel.action.Enable(); else ScrollWheel.action.Disable();
 
             /*if (type == ControlType.UI) UpInput.action.Enable(); else UpInput.action.Disable();
             if (type == ControlType.UI) DownInput.action.Enable(); else DownInput.action.Disable();
