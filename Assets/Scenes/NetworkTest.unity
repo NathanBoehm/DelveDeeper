@@ -1372,8 +1372,6 @@ MonoBehaviour:
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
         Gain: 1
-        LegacyInput: 
-        LegacyGain: 1
         CancelDeltaTime: 0
       InputValue: 0
       Driver:
@@ -1385,8 +1383,6 @@ MonoBehaviour:
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
         Gain: -1
-        LegacyInput: 
-        LegacyGain: 1
         CancelDeltaTime: 0
       InputValue: 0
       Driver:
@@ -4794,10 +4790,8 @@ MonoBehaviour:
   _maxWalkSpeed: 5
   _maxSprintSpeed: 10
   _acceleration: 5
-  _panAcceleration: 50
   _gravity: -10
   _jumpHeight: 1
-  enabledMovement: 1
 --- !u!143 &1355985833
 CharacterController:
   m_ObjectHideFlags: 0

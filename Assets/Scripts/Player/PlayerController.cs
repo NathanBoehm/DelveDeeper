@@ -48,10 +48,6 @@ namespace Player
         private float _currentSpeedRight = 0.0f;
 
 
-        [SerializeField]
-        private float _panAcceleration = 10.0f;
-
-
         //Jump Movement Fields
         public Vector3 JumpDirection { get; private set; } = Vector3.zero;
         public bool IsJumping { get; private set; } = false;
@@ -64,8 +60,6 @@ namespace Player
         private float _jumpHeight = 1.0f;
 
         private float _verticalVelocity;
-        [SerializeField]
-        private bool enabledMovement;
 
         public event Action PlayerLanded;
         public event Action PlayerJumped;
@@ -166,9 +160,6 @@ namespace Player
 
         private void MovePlayer()
         {
-            if (!enabledMovement)
-                return;
-
             Vector2 movementInputs = ControlInputManager.Instance.MovementInput.action.ReadValue<Vector2>();
 
             float targetSpeedForward = CalculateTargetForwardSpeed(movementInputs.y);
