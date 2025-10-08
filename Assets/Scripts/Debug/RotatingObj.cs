@@ -1,8 +1,9 @@
 using EditorAttributes;
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
-public class RotatingObj : MonoBehaviour
+public class RotatingObj : NetworkBehaviour
 {
     private float deg = 180f;
     private const float len = 1.5f;
@@ -10,7 +11,8 @@ public class RotatingObj : MonoBehaviour
     private bool _doingAKickFlip = false;
 
     [Button]
-    public void DoAKickFlip()
+    [Rpc(SendTo.Server)]
+    public void DoAKickFlipRpc()
     {
         if (_doingAKickFlip) return;
 

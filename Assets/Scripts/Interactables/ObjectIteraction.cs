@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 namespace Interactable
 {
-    public class ObjectIteraction : MonoBehaviour
+    public class ObjectIteraction : MonoBehaviour, INetworkInitializer
     {
         [SerializeField]
         private CinemachineCamera _playerCamera;
@@ -79,6 +79,16 @@ namespace Interactable
             {
                 _interactionText.text = $"'{ControlInputManager.Instance.InteractInput.action.GetBindingDisplayString()}' - {_targetedItem.HighlightText}";
             }
+        }
+
+        public void Initialize()
+        {
+            this.enabled = false;
+        }
+
+        public void InitializeForOwner()
+        {
+            this.enabled = true;
         }
     }
 }

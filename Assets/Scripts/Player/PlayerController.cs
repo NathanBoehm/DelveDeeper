@@ -9,7 +9,7 @@ using EditorAttributes;
 namespace Player
 {
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, INetworkInitializer
     {
         //Required Components
         [SerializeField, Required, HideProperty]
@@ -261,6 +261,18 @@ namespace Player
                 if (Mathf.Abs(_verticalVelocity) < Mathf.Abs(TERMINAL_VELOCITY))
                     _verticalVelocity += _gravity * Time.deltaTime;
             }
+        }
+
+        public void Initialize()
+        {
+            this.enabled = false;
+            _playerCamera.enabled = false;
+        }
+
+        public void InitializeForOwner()
+        {
+            this.enabled = true;
+            _playerCamera.enabled = true;
         }
     }
 

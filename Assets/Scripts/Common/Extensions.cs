@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -73,8 +76,6 @@ public static class Extensions
 
         public TransformEulerRotationSetter X(float x)
         {
-            Debug.Log($"new: ({x}, {_go.transform.localRotation.eulerAngles.y}, {_go.transform.localRotation.eulerAngles.z})");
-            Debug.Log($"old: ({_go.transform.localRotation.eulerAngles.x}, {_go.transform.localRotation.eulerAngles.y}, {_go.transform.localRotation.eulerAngles.z})");
             _go.transform.localRotation = Quaternion.Euler(
                 x,
                 _go.transform.localRotation.eulerAngles.y,
@@ -85,8 +86,6 @@ public static class Extensions
 
         public TransformEulerRotationSetter Y(float y)
         {
-            Debug.Log($"new: ({_go.transform.localRotation.eulerAngles.x}, {y}, {_go.transform.localRotation.eulerAngles.z})");
-            Debug.Log($"old: ({_go.transform.localRotation.eulerAngles.x}, {_go.transform.localRotation.eulerAngles.y}, {_go.transform.localRotation.eulerAngles.z})");
             _go.transform.localRotation = Quaternion.Euler(
                 _go.transform.localRotation.eulerAngles.x,
                 y,
@@ -121,6 +120,14 @@ public static class Extensions
         {
             Z(_go.transform.localRotation.eulerAngles.z + z);
             return this;
+        }
+    }
+
+    public static void ForEach<T>(this IEnumerable<T> items, System.Action<T> action)
+    {
+        for (int i = 0; i < items.Count(); ++i)
+        {
+            action?.Invoke(items.ElementAt(i));
         }
     }
 

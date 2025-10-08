@@ -152,14 +152,14 @@ namespace Managers
             /*if (type == ControlType.UI) UpInput.action.Enable(); else UpInput.action.Disable();
             if (type == ControlType.UI) DownInput.action.Enable(); else DownInput.action.Disable();
             if (type == ControlType.UI) LeftInput.action.Enable(); else UpInput.action.Disable();
-            if (type == ControlType.UI) RightInput.action.Enable(); else DownInput.action.Disable();
+            if (type == ControlType.UI) RightInput.action.Enable(); else DownInput.action.Disable();*/
             if (type == ControlType.UI)
             {
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
             }
             
-            if (type == ControlType.Haggle)
+            /*if (type == ControlType.Haggle)
             { 
                 HaggleUpInput.action.Enable();
                 HaggleDownInput.action.Enable();
@@ -188,8 +188,8 @@ namespace Managers
 
             //UpInput.action.Disable(); 
             //DownInput.action.Disable();
-
-            EnableCharacterControls();
+            EnableUIControls();
+            //EnableCharacterControls();
         }
     }
 }
