@@ -2,6 +2,7 @@ using EditorAttributes;
 using Interactable;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class WorldButton : MonoBehaviour, IInteractable
 {
@@ -12,18 +13,15 @@ public class WorldButton : MonoBehaviour, IInteractable
     [SerializeField] private AudioSource    _audioSource;
     [SerializeField] private AudioClip      _audioClip;
 
-    [SerializeField] private bool _localPosition = true;
+    public UnityEvent OnPressed;
 
-
-    private Vector3 _ogPositionLocal;
-    private Vector3 _ogPositionGlobal;
+    private Vector3 _ogPosition;
     private bool    _pressed = false;
 
 
     private void Awake()
     {
-        _ogPositionLocal = transform.localPosition;
-        _ogPositionGlobal = transform.position;
+        _ogPosition = transform.localPosition;
     }
 
     public string HighlightText => "Push Button";
@@ -34,15 +32,16 @@ public class WorldButton : MonoBehaviour, IInteractable
             return;
 
         _pressed = true;
-        StartCoroutine(_localPosition ? PlayLocalPressAnimation() : PlayGlobalPressAnimation());
+        OnPressed?.Invoke();
+        StartCoroutine(PlayPressAnimation());
     }
 
-    private IEnumerator PlayLocalPressAnimation()
+    private IEnumerator PlayPressAnimation()
     {
         float elapsedTime = 0f;
         while (elapsedTime < _animLength)
         {
-            gameObject.transform.localPosition = Vector3.Lerp(_ogPositionLocal, _pressedPosition, elapsedTime / _animLength);
+            gameObject.transform.localPosition = Vector3.Lerp(_ogPosition, _pressedPosition, elapsedTime / _animLength);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -52,34 +51,11 @@ public class WorldButton : MonoBehaviour, IInteractable
         elapsedTime = 0f;
         while (elapsedTime < _animLength)
         {
-            gameObject.transform.localPosition = Vector3.Lerp(_pressedPosition, _ogPositionLocal, elapsedTime / _animLength);
+            gameObject.transform.localPosition = Vector3.Lerp(_pressedPosition, _ogPosition, elapsedTime / _animLength);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        gameObject.transform.localPosition = _ogPositionLocal;
-        _pressed = false;
-    }
-
-    private IEnumerator PlayGlobalPressAnimation()
-    {
-        float elapsedTime = 0f;
-        while (elapsedTime < _animLength)
-        {
-            gameObject.transform.position = Vector3.Lerp(_ogPositionGlobal, _pressedPosition, elapsedTime / _animLength);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(_pressResetDelay);
-
-        elapsedTime = 0f;
-        while (elapsedTime < _animLength)
-        {
-            gameObject.transform.position = Vector3.Lerp(_pressedPosition, _ogPositionGlobal, elapsedTime / _animLength);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        gameObject.transform.position = _ogPositionGlobal;
+        gameObject.transform.localPosition = _ogPosition;
         _pressed = false;
     }
 }

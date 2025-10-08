@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public static class Extensions
 {
@@ -55,4 +56,72 @@ public static class Extensions
                 deltaTime)
             .AsQuaternion();
     }
+
+    public static TransformEulerRotationSetter SetLocalEulerRotation(this GameObject @object)
+    {
+        return new TransformEulerRotationSetter(@object);
+    }
+
+    public class TransformEulerRotationSetter
+    {
+        private GameObject _go;
+
+        public TransformEulerRotationSetter(GameObject go)
+        {
+            _go = go;
+        }
+
+        public TransformEulerRotationSetter X(float x)
+        {
+            Debug.Log($"new: ({x}, {_go.transform.localRotation.eulerAngles.y}, {_go.transform.localRotation.eulerAngles.z})");
+            Debug.Log($"old: ({_go.transform.localRotation.eulerAngles.x}, {_go.transform.localRotation.eulerAngles.y}, {_go.transform.localRotation.eulerAngles.z})");
+            _go.transform.localRotation = Quaternion.Euler(
+                x,
+                _go.transform.localRotation.eulerAngles.y,
+                _go.transform.localRotation.eulerAngles.z);
+
+            return this;
+        }
+
+        public TransformEulerRotationSetter Y(float y)
+        {
+            Debug.Log($"new: ({_go.transform.localRotation.eulerAngles.x}, {y}, {_go.transform.localRotation.eulerAngles.z})");
+            Debug.Log($"old: ({_go.transform.localRotation.eulerAngles.x}, {_go.transform.localRotation.eulerAngles.y}, {_go.transform.localRotation.eulerAngles.z})");
+            _go.transform.localRotation = Quaternion.Euler(
+                _go.transform.localRotation.eulerAngles.x,
+                y,
+                _go.transform.localRotation.eulerAngles.z);
+
+            return this;
+        }
+
+        public TransformEulerRotationSetter Z(float z)
+        {
+            _go.transform.localRotation = Quaternion.Euler(
+                _go.transform.localRotation.eulerAngles.x,
+                _go.transform.localRotation.eulerAngles.y,
+                z);
+
+            return this;
+        }
+
+        public TransformEulerRotationSetter AddX(float x)
+        {
+            X(_go.transform.localRotation.eulerAngles.x + x);
+            return this;
+        }
+
+        public TransformEulerRotationSetter AddY(float y)
+        {
+            Y(_go.transform.localRotation.eulerAngles.y + y);
+            return this;
+        }
+
+        public TransformEulerRotationSetter Addz(float z)
+        {
+            Z(_go.transform.localRotation.eulerAngles.z + z);
+            return this;
+        }
+    }
+
 }
