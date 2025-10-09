@@ -9,7 +9,7 @@ using EditorAttributes;
 namespace Player
 {
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerController : MonoBehaviour, INetworkInitializer
+    public class PlayerController : MonoBehaviour, INetworkObjectInitializer
     {
         //Required Components
         [SerializeField, Required, HideProperty]

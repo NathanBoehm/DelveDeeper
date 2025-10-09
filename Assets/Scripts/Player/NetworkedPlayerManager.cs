@@ -13,15 +13,12 @@ public class NetworkedPlayerManager : NetworkBehaviour
 
     [SerializeField] GameObject _UI;
 
-    private INetworkInitializer[] _networkInitializers;
+    private INetworkObjectInitializer[] _networkInitializers;
 
     private void Awake()
     {
-        _networkInitializers = this.gameObject.GetComponents<INetworkInitializer>();
+        _networkInitializers = this.gameObject.GetComponents<INetworkObjectInitializer>();
         _networkInitializers.ForEach(i => i.Initialize());
-        //_controller.enabled = false;
-        //_playerCamera.enabled = false;
-        //_objectInteraction.enabled = false;
         _UI.SetActive(false);
     }
 
@@ -29,13 +26,10 @@ public class NetworkedPlayerManager : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
-        if (IsOwner)
+        if (HasAuthority)
         {
             ControlInputManager.Instance.EnableCharacterControls();
             _networkInitializers.ForEach(_networkInitializer => _networkInitializer.InitializeForOwner());
-            //_controller.enabled = true;
-            //_playerCamera.enabled = true;
-            //_objectInteraction.enabled = true;
             _UI.SetActive(true);
         }
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface INetworkInitializer
+public interface INetworkObjectInitializer
 {
     public void Initialize();
     public void InitializeForOwner();
