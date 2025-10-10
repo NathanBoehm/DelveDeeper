@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 namespace Interactable
 {
-    public class ObjectIteraction : MonoBehaviour, INetworkInitializer
+    public class ObjectIteraction : MonoBehaviour, INetworkObjectInitializer
     {
         [SerializeField]
         private CinemachineCamera _playerCamera;

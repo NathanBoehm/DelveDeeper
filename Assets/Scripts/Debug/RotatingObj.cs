@@ -18,6 +18,8 @@ public class RotatingObj : NetworkBehaviour
 
         _doingAKickFlip = true;
         StartCoroutine(Rotate());
+
+
     }
 
     private IEnumerator Rotate()

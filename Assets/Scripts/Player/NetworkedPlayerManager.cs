@@ -26,7 +26,7 @@ public class NetworkedPlayerManager : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
-        if (HasAuthority)
+        if (IsOwner)
         {
             ControlInputManager.Instance.EnableCharacterControls();
             _networkInitializers.ForEach(_networkInitializer => _networkInitializer.InitializeForOwner());
