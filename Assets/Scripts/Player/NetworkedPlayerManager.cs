@@ -17,7 +17,7 @@ public class NetworkedPlayerManager : NetworkBehaviour
 
     private void Awake()
     {
-        _networkInitializers = this.gameObject.GetComponents<INetworkObjectInitializer>();
+        _networkInitializers = this.gameObject.GetComponentsInChildren<INetworkObjectInitializer>();
         _networkInitializers.ForEach(i => i.Initialize());
         _UI.SetActive(false);
     }

@@ -2,7 +2,7 @@ using EditorAttributes;
 using System.Collections;
 using UnityEngine;
 
-public class HeadTracking : MonoBehaviour
+public class HeadTracking : MonoBehaviour, INetworkObjectInitializer
 {
     [SerializeField] float _maxLookLength = 2.0f;
     [SerializeField] float _maxLookDeg = 140f;
@@ -86,11 +86,11 @@ public class HeadTracking : MonoBehaviour
         _startingLook = _currentLook;
 
         _elapsedTime = 0f;
-        var startingLookDirection = _startingLook - this.gameObject.transform.position;
-        var destinationLookDirection = _destinationLook - this.gameObject.transform.position;
-        var lookDirectionChangeDeg = Vector3.Dot(startingLookDirection, destinationLookDirection) * Mathf.Rad2Deg;
+        //var startingLookDirection = _startingLook - this.gameObject.transform.position;
+        //var destinationLookDirection = _destinationLook - this.gameObject.transform.position;
+        //var lookDirectionChangeDeg = Mathf.Abs(Vector3.Dot(startingLookDirection, destinationLookDirection) * Mathf.Rad2Deg);
 
-        //var lookDirectionChangeDeg = Mathf.Abs(LookDirectionDegrees(_destinationLook) - LookDirectionDegrees(_startingLook));
+        var lookDirectionChangeDeg = Mathf.Abs(LookDirectionDegrees(_destinationLook) - LookDirectionDegrees(_startingLook));
         if (lookDirectionChangeDeg > 3) Debug.Log($"deg change: {lookDirectionChangeDeg}");
         _lookLength = _maxLookLength * (lookDirectionChangeDeg / _maxLookDeg);
         if (lookDirectionChangeDeg > 3) Debug.Log($"anim length: {_lookLength}");
@@ -101,5 +101,15 @@ public class HeadTracking : MonoBehaviour
         //Debug.Log(_currentLook);
         _animator.SetLookAtPosition(_currentLook);
         _animator.SetLookAtWeight(1, _bodyWeight, _headWeight, _eyesWeight, _clampWeight);
+    }
+
+    public void Initialize()
+    {
+        //this.enabled = false;
+    }
+
+    public void InitializeForOwner()
+    {
+        //this.enabled = true;
     }
 }

@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: 857817182603729311}
   - component: {fileID: 6123231003537560024}
   - component: {fileID: 8967346777954802386}
+  - component: {fileID: 3950232028448283823}
   m_Layer: 0
   m_Name: TrackingTarget
   m_TagString: Untagged
@@ -330,6 +331,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3950232028448283823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634994829439418860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e30b677b82e72384a9c4dfa731729a28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeadTrackingTarget
+  <IsDefault>k__BackingField: 1
+  <Priority>k__BackingField: 0
 --- !u!1 &685593766210550936
 GameObject:
   m_ObjectHideFlags: 0
@@ -2925,6 +2940,8 @@ GameObject:
   - component: {fileID: 6945594137553074518}
   - component: {fileID: 3897531161399085904}
   - component: {fileID: 397339837145207765}
+  - component: {fileID: 8958474295225422674}
+  - component: {fileID: 7912478424709388914}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: Untagged
@@ -3066,6 +3083,77 @@ MonoBehaviour:
         DecelTime: 0
   PlayerIndex: -1
   AutoEnableInputs: 1
+--- !u!114 &8958474295225422674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3802813560550112112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &7912478424709388914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3802813560550112112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da52bf8bbc1de48cfb221a6ff30f7972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Multiplayer.Center.NetcodeForGameObjectsExample::Unity.Multiplayer.Center.NetcodeForGameObjectsExample.ClientNetworkTransform
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 1
+  AutoOwnerAuthorityTickOffset: 1
+  PositionInterpolationType: 0
+  RotationInterpolationType: 0
+  ScaleInterpolationType: 0
+  PositionLerpSmoothing: 1
+  PositionMaxInterpolationTime: 0.1
+  RotationLerpSmoothing: 1
+  RotationMaxInterpolationTime: 0.1
+  ScaleLerpSmoothing: 1
+  ScaleMaxInterpolationTime: 0.1
+  AuthorityMode: 1
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 0
+  SyncPositionX: 0
+  SyncPositionY: 0
+  SyncPositionZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &3948486311899885820
 GameObject:
   m_ObjectHideFlags: 0
@@ -6280,10 +6368,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.3
+  m_Height: 1.85
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -0.025, z: 0}
 --- !u!143 &183038976923715183
 CharacterController:
   m_ObjectHideFlags: 0
@@ -6302,8 +6390,8 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 1.8
+  m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -7103,6 +7191,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3363108460247933538, guid: 2195ed6bed794409eb682cfa75fc541c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7980786073795398871}
+    - targetCorrespondingSourceObject: {fileID: 3363108460247933538, guid: 2195ed6bed794409eb682cfa75fc541c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9083377205070395785}
+    - targetCorrespondingSourceObject: {fileID: 3363108460247933538, guid: 2195ed6bed794409eb682cfa75fc541c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3201758098135838475}
   m_SourcePrefab: {fileID: 100100000, guid: 2195ed6bed794409eb682cfa75fc541c, type: 3}
 --- !u!4 &9048835319287307265 stripped
 Transform:
@@ -7757,6 +7851,44 @@ MonoBehaviour:
     TriggerNameHash: 1080829965
     TransitionIndex: 0
   m_Animator: {fileID: 9048835319297094157}
+--- !u!114 &9083377205070395785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9048835319287726265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d99d605172a0e5448bf913ef512b406f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeadTracking
+  _maxLookLength: 2
+  _maxLookDeg: 140
+  _bodyWeight: 0.1
+  _headWeight: 0.4
+  _eyesWeight: 0.5
+  _clampWeight: 0.5
+  _pollingInterval_s: 1
+  _maxHTTDistance: 5
+  _animator: {fileID: 9048835319297094157}
+  _defaultTarget: {fileID: 3950232028448283823}
+--- !u!114 &3201758098135838475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9048835319287726265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603c7af98a557234e9426d1d2076bc33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ViewConeVisualizer
+  angle: 70
+  maxDistance: 5
+  fillColor: {r: 0, g: 1, b: 0, a: 0.25}
+  positionOffset: {x: 0, y: 1, z: 0}
 --- !u!95 &9048835319297094157 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3363108460255318230, guid: 2195ed6bed794409eb682cfa75fc541c, type: 3}
