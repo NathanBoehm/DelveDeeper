@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using Managers;
 using System;
 using EditorAttributes;
+using System.Collections;
 
 
 namespace Player
@@ -41,12 +42,28 @@ namespace Player
         [SerializeField, HideProperty]
         private float _acceleration = 5.0f;
 
-        [SerializeField, FoldoutGroup("Movement", nameof(_maxWalkSpeed), nameof(_maxSprintSpeed), nameof(_acceleration))]
+        private bool _isDashing = false;
+        private Vector3 _dashDirection = Vector3.zero;
+        [SerializeField, HideProperty]
+        private float _dashSpeed = 25f;
+        [SerializeField, HideProperty]
+        private float _dashLength = 0.25f;
+
+        [SerializeField, FoldoutGroup("Movement", nameof(_maxWalkSpeed), nameof(_maxSprintSpeed), nameof(_acceleration), nameof(_dashSpeed), nameof(_dashLength))]
         private EditorAttributes.Void MovementFielsGroup;
 
         private float _currentSpeedForward = 0.0f;
         private float _currentSpeedRight = 0.0f;
 
+        [SerializeField, HideProperty]//Tooltip("Minimum Rotation Speed")
+        private float _baseCameraRotFollowSpeed = 8f;
+        [SerializeField, HideProperty]//Tooltip("How much faster rotation speed can be per degree of difference in camera rotation speed")
+        private float _rotationSpeedScaling = 0.5f;
+        [SerializeField, HideProperty]//Tooltip("Maximum player object rotation speed")
+        private float _maxCameraRotFollowSpeed = 30f;
+
+        [SerializeField, FoldoutGroup("Camera Rotation Follow Speed", nameof(_baseCameraRotFollowSpeed), nameof(_rotationSpeedScaling), nameof(_maxCameraRotFollowSpeed))]
+        private EditorAttributes.Void RotationFieldsGroup;
 
         //Jump Movement Fields
         public Vector3 JumpDirection { get; private set; } = Vector3.zero;
@@ -75,6 +92,24 @@ namespace Player
         {
             ControlInputManager.Instance.ReadyWeaponInput.action.performed += ReadyWeapon;
             ControlInputManager.Instance.AttackInput.action.performed += Attack;
+            ControlInputManager.Instance.SprintInput.action.performed += Dash;
+        }
+
+        private void Dash(InputAction.CallbackContext context)
+        {
+            var inputs = ControlInputManager.Instance.MovementInput.action.ReadValue<Vector2>();
+            if (_isDashing || inputs.y != 0)
+                return;
+
+            _isDashing = true;
+            _dashDirection = inputs.x > 0 ? _playerCamera.transform.right * _dashSpeed : _playerCamera.transform.right * _dashSpeed * -1;
+            StartCoroutine(ResetDash());
+        }
+
+        private IEnumerator ResetDash()
+        {
+            yield return new WaitForSeconds(_dashLength);
+            _isDashing = false;
         }
 
         private void ReadyWeapon(InputAction.CallbackContext context)
@@ -98,15 +133,29 @@ namespace Player
         {
             MovePlayer();
             JumpAndFall();
+            //AlignPlayerWithCamera();
+        }
+
+        private void LateUpdate()
+        {
             AlignPlayerWithCamera();
         }
 
         private void AlignPlayerWithCamera()
         {
-            //var yRotateionDegrees = Mouse.current.delta.x.ReadValue();
-            //_playerGameObject.AddLerpedEulerRotationY(yRotateionDegrees * _panAcceleration, Time.deltaTime);
+            //remove y to prevent player from tilting
+            var normalizedCameraForward = _playerCamera.transform.forward.NewY(0).normalized;
+            var targetRot = Quaternion.LookRotation(normalizedCameraForward);
+            _playerGameObject.transform.position = (_playerCamera.transform.position - normalizedCameraForward * 0.15f).NewY(_playerGameObject.transform.position.y);
+            //_playerGameObject.transform.localRotation = Quaternion.Euler(_playerCamera.transform.localRotation.eulerAngles.x * -1, _playerGameObject.transform.localRotation.eulerAngles.y, _playerCamera.transform.localRotation.eulerAngles.z * -1);
 
-            _playerGameObject.SetEulerRotationY(_playerCamera.transform.rotation.eulerAngles.y);
+            float angleDiff = Quaternion.Angle(_playerGameObject.transform.rotation, targetRot);
+            float playerRotationSpeed = Mathf.Min(_baseCameraRotFollowSpeed + angleDiff * _rotationSpeedScaling, _maxCameraRotFollowSpeed);
+
+            _playerGameObject.transform.rotation = Quaternion.Slerp(_playerGameObject.transform.rotation, targetRot, Time.deltaTime * 10);
+
+            //_playerGameObject.transform.position = _playerGameObject.transform.position.NewZ(_playerCamera.transform.position.z - 0.15f);
+            //_playerGameObject.SetEulerRotationY(_playerCamera.transform.rotation.eulerAngles.y);
 
             /*var cameraForward = Camera.main.transform.forward;
             cameraForward.y = 0;
@@ -168,6 +217,8 @@ namespace Player
             CalculateCurrentSpeed(targetSpeedForward, ref _currentSpeedForward);
             CalculateCurrentSpeed(targetSpeedRight, ref _currentSpeedRight);
 
+            Vector3 moveDirection;
+
             if (!IsJumping)
             {
                 Vector3 inputDirection = new Vector3(movementInputs.x, 0.0f, movementInputs.y).normalized;
@@ -189,13 +240,21 @@ namespace Player
 
                 JumpDirection = inputDirection; //preserve current direction in case player jumps this frame
 
-                _characterController.Move(inputDirection * Time.deltaTime + (new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime));
+                moveDirection = inputDirection * Time.deltaTime + (new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+                //_characterController.Move(inputDirection * Time.deltaTime + (new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime));
             }
             else
             {
                 CurrentSpeed = 0;
-                _characterController.Move(JumpDirection * Time.deltaTime + (new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime));
+                moveDirection = JumpDirection * Time.deltaTime + (new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+                //_characterController.Move(JumpDirection * Time.deltaTime + (new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime));
             }
+
+            if (_isDashing)
+                moveDirection = _dashDirection * Time.deltaTime + (new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+
+
+            _characterController.Move(moveDirection);
         }
 
         private float CalculateTargetHorizontalSpeed(float xInput)

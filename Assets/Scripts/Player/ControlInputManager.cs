@@ -188,8 +188,8 @@ namespace Managers
 
             //UpInput.action.Disable(); 
             //DownInput.action.Disable();
-            EnableUIControls();
-            //EnableCharacterControls();
+            //EnableUIControls();
+            EnableCharacterControls();
         }
     }
 }
