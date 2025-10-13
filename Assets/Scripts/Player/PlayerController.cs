@@ -82,6 +82,17 @@ namespace Player
         public event Action PlayerJumped;
 
 
+        public float maxPitchAngle = 45f;
+        public float rotationStrength = 1.0f;
+
+        [SerializeField] Transform _shoulderTransform;
+        [SerializeField] Transform _handTransform;
+        private float _initialCameraPitch;
+        private Quaternion _initialShoulderRotation;
+        private Vector3 _handOffsetFromCamera;
+        private Quaternion _handRotOffsetFromCamera;
+
+
         private void Awake()
         {
             if (_characterController == null)
@@ -93,6 +104,12 @@ namespace Player
             ControlInputManager.Instance.ReadyWeaponInput.action.performed += ReadyWeapon;
             ControlInputManager.Instance.AttackInput.action.performed += Attack;
             ControlInputManager.Instance.SprintInput.action.performed += Dash;
+
+
+            _initialCameraPitch = GetPitch(_playerCamera.transform.forward);
+            _initialShoulderRotation = _shoulderTransform.rotation;
+            _handOffsetFromCamera = _playerCamera.transform.InverseTransformPoint(_handTransform.position);
+            _handRotOffsetFromCamera = Quaternion.Inverse(_playerCamera.transform.rotation) * _handTransform.rotation;
         }
 
         private void Dash(InputAction.CallbackContext context)
@@ -147,7 +164,6 @@ namespace Player
             var normalizedCameraForward = _playerCamera.transform.forward.NewY(0).normalized;
             var targetRot = Quaternion.LookRotation(normalizedCameraForward);
             _playerGameObject.transform.position = (_playerCamera.transform.position - normalizedCameraForward * 0.15f).NewY(_playerGameObject.transform.position.y);
-            //_playerGameObject.transform.localRotation = Quaternion.Euler(_playerCamera.transform.localRotation.eulerAngles.x * -1, _playerGameObject.transform.localRotation.eulerAngles.y, _playerCamera.transform.localRotation.eulerAngles.z * -1);
 
             float angleDiff = Quaternion.Angle(_playerGameObject.transform.rotation, targetRot);
             float playerRotationSpeed = Mathf.Min(_baseCameraRotFollowSpeed + angleDiff * _rotationSpeedScaling, _maxCameraRotFollowSpeed);
@@ -162,6 +178,33 @@ namespace Player
             cameraForward.Normalize();
 
             _playerGameObject.transform.forward = cameraForward;*/
+
+
+            //float currentPitch = GetPitch(_playerCamera.transform.forward);
+            //float pitchDelta = currentPitch - _initialCameraPitch;
+            
+            //Quaternion shoulderRotation = Quaternion.AngleAxis(pitchDelta * 1, _shoulderTransform.right);
+            //_shoulderTransform.rotation = shoulderRotation * _initialShoulderRotation;
+
+
+
+            //float cameraPitch = _playerCamera.transform.localEulerAngles.x;
+            //if (cameraPitch > 180f)
+                //cameraPitch -= 360f;
+
+            //float pitchOffset = Mathf.Clamp(cameraPitch, -maxPitchAngle, maxPitchAngle) * rotationStrength;
+
+            //Quaternion pitchRotation = Quaternion.AngleAxis(pitchOffset, Vector3.right);
+            //Quaternion pitchRotation = Quaternion.Euler(pitchOffset, 0f, 0f);
+            //_shoulderTransform.rotation = _startingShoulderOrientation * pitchRotation;
+        }
+
+        private float GetPitch(Vector3 forward)
+        {
+            // Pitch is the angle up/down relative to the horizontal plane
+            Vector3 flatForward = new Vector3(forward.x, 0, forward.z).normalized;
+            float pitch = Vector3.SignedAngle(flatForward, forward, _playerCamera.transform.right);
+            return pitch;
         }
 
         /*private void MovePlayer()
