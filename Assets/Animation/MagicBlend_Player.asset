@@ -1,0 +1,234 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea8c2a1237b4b5b8bbfd16a4f12cc26, type: 3}
+  m_Name: MagicBlend_Player
+  m_EditorClassIdentifier: Assembly-CSharp::KINEMATION.MagicBlend.Runtime.MagicBlendAsset
+  rigAsset: {fileID: 11400000, guid: 8eda1a24fde0e104a858a47331546ffe, type: 2}
+  blendTime: 0.15
+  blendCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  basePose: {fileID: 7400000, guid: 589945f836e4a4b4dbfebce7f899b196, type: 2}
+  overlayPose: {fileID: 7400000, guid: 02354989001e7874e9b43827ca7d9772, type: 2}
+  overrideOverlays: []
+  overlaySpeed: 1
+  isAnimation: 0
+  blendOutType: 0
+  layeredBlends:
+  - layer:
+      chainName: LowerBody
+      elementChain:
+      - name: Base HumanLThigh1
+        index: 2
+        depth: -1
+      - name: Base HumanLThigh2
+        index: 3
+        depth: -1
+      - name: Base HumanLCalf
+        index: 4
+        depth: -1
+      - name: Base HumanLFoot
+        index: 5
+        depth: -1
+      - name: Base HumanLToe11
+        index: 6
+        depth: -1
+      - name: Base HumanRThigh1
+        index: 7
+        depth: -1
+      - name: Base HumanRThigh2
+        index: 8
+        depth: -1
+      - name: Base HumanRCalf
+        index: 9
+        depth: -1
+      - name: Base HumanRFoot
+        index: 10
+        depth: -1
+      - name: Base HumanRToe11
+        index: 11
+        depth: -1
+    baseWeight: 0
+    additiveWeight: 0
+    localWeight: 0
+  - layer:
+      chainName: Spine
+      elementChain:
+      - name: Base HumanSpine1
+        index: 14
+        depth: -1
+      - name: Base HumanSpine2
+        index: 15
+        depth: -1
+      - name: Base HumanSpine3
+        index: 16
+        depth: -1
+      - name: Base HumanRibcage
+        index: 17
+        depth: -1
+    baseWeight: 0
+    additiveWeight: 0
+    localWeight: 0
+  - layer:
+      chainName: Head
+      elementChain:
+      - name: Base HumanNeck
+        index: 50
+        depth: -1
+      - name: Base HumanHead
+        index: 51
+        depth: -1
+    baseWeight: 0
+    additiveWeight: 0
+    localWeight: 0
+  - layer:
+      chainName: Arms
+      elementChain:
+      - name: Base HumanLForearm2
+        index: 22
+        depth: -1
+      - name: Base HumanLForearm3
+        index: 23
+        depth: -1
+      - name: Base HumanLPalm
+        index: 24
+        depth: -1
+      - name: Base HumanRForearm2
+        index: 142
+        depth: -1
+      - name: Base HumanRForearm3
+        index: 143
+        depth: -1
+      - name: Base HumanRPalm
+        index: 144
+        depth: -1
+    baseWeight: 0
+    additiveWeight: 0
+    localWeight: 0
+  - layer:
+      chainName: Fingers
+      elementChain:
+      - name: Base HumanLFingerIndexL1
+        index: 25
+        depth: -1
+      - name: Base HumanLFingerIndexL2
+        index: 26
+        depth: -1
+      - name: Base HumanLFingerIndexL3
+        index: 27
+        depth: -1
+      - name: Base HumanLFingerL1
+        index: 28
+        depth: -1
+      - name: Base HumanLFingerL2
+        index: 29
+        depth: -1
+      - name: Base HumanLFingerL3
+        index: 30
+        depth: -1
+      - name: Base HumanLFingerPinkieL1
+        index: 31
+        depth: -1
+      - name: Base HumanLFingerPinkieL2
+        index: 32
+        depth: -1
+      - name: Base HumanLFingerPinkieL3
+        index: 33
+        depth: -1
+      - name: Base HumanLFingerRingL1
+        index: 34
+        depth: -1
+      - name: Base HumanLFingerRingL2
+        index: 35
+        depth: -1
+      - name: Base HumanLFingerRingL3
+        index: 36
+        depth: -1
+      - name: Base HumanLThumbL1
+        index: 37
+        depth: -1
+      - name: Base HumanLThumbL2
+        index: 38
+        depth: -1
+      - name: Base HumanLThumbL3
+        index: 39
+        depth: -1
+      - name: Base HumanRFingerIndexR1
+        index: 145
+        depth: -1
+      - name: Base HumanRFingerIndexR2
+        index: 146
+        depth: -1
+      - name: Base HumanRFingerIndexR3
+        index: 147
+        depth: -1
+      - name: Base HumanRFingerPinkieR1
+        index: 148
+        depth: -1
+      - name: Base HumanRFingerPinkieR2
+        index: 149
+        depth: -1
+      - name: Base HumanRFingerPinkieR3
+        index: 150
+        depth: -1
+      - name: Base HumanRFingerR1
+        index: 151
+        depth: -1
+      - name: Base HumanRFingerR2
+        index: 152
+        depth: -1
+      - name: Base HumanRFingerR3
+        index: 153
+        depth: -1
+      - name: Base HumanRFingerRingR1
+        index: 154
+        depth: -1
+      - name: Base HumanRFingerRingR2
+        index: 155
+        depth: -1
+      - name: Base HumanRFingerRingR3
+        index: 156
+        depth: -1
+      - name: Base HumanRThumbR1
+        index: 157
+        depth: -1
+      - name: Base HumanRThumbR2
+        index: 158
+        depth: -1
+      - name: Base HumanRThumbR3
+        index: 159
+        depth: -1
+    baseWeight: 0
+    additiveWeight: 0
+    localWeight: 0
+  globalWeight: 1

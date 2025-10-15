@@ -87,11 +87,6 @@ namespace Player
 
         [SerializeField] Transform _shoulderTransform;
         [SerializeField] Transform _handTransform;
-        private float _initialCameraPitch;
-        private Quaternion _initialShoulderRotation;
-        private Vector3 _handOffsetFromCamera;
-        private Quaternion _handRotOffsetFromCamera;
-
 
         private void Awake()
         {
@@ -104,12 +99,6 @@ namespace Player
             ControlInputManager.Instance.ReadyWeaponInput.action.performed += ReadyWeapon;
             ControlInputManager.Instance.AttackInput.action.performed += Attack;
             ControlInputManager.Instance.SprintInput.action.performed += Dash;
-
-
-            _initialCameraPitch = GetPitch(_playerCamera.transform.forward);
-            _initialShoulderRotation = _shoulderTransform.rotation;
-            _handOffsetFromCamera = _playerCamera.transform.InverseTransformPoint(_handTransform.position);
-            _handRotOffsetFromCamera = Quaternion.Inverse(_playerCamera.transform.rotation) * _handTransform.rotation;
         }
 
         private void Dash(InputAction.CallbackContext context)
@@ -275,10 +264,12 @@ namespace Player
 
                     inputDirection = cameraRight.normalized * _currentSpeedRight + cameraForward.normalized * _currentSpeedForward;
                     CurrentSpeed = inputDirection.magnitude;
+                    _animator.SetBool("Walking", true);
                 }
                 else
                 {
-                    CurrentSpeed = 0;
+                    CurrentSpeed = 0; 
+                    _animator.SetBool("Walking", false);
                 }
 
                 JumpDirection = inputDirection; //preserve current direction in case player jumps this frame
@@ -291,10 +282,14 @@ namespace Player
                 CurrentSpeed = 0;
                 moveDirection = JumpDirection * Time.deltaTime + (new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
                 //_characterController.Move(JumpDirection * Time.deltaTime + (new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime));
+                _animator.SetBool("Walking", false);
             }
 
             if (_isDashing)
+            {
                 moveDirection = _dashDirection * Time.deltaTime + (new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+                _animator.SetBool("Walking", false);
+            }
 
 
             _characterController.Move(moveDirection);

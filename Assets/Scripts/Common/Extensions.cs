@@ -131,4 +131,13 @@ public static class Extensions
         }
     }
 
+    public static T Random<T>(this IEnumerable<T> values)
+    {
+        if (values == null || values.Count() < 1)
+        {
+            Debug.LogError("Cannot get random from null or empty list");
+            return default(T);
+        }
+        return values.ElementAt(new System.Random().Next(0, values.Count()));
+    }
 }
