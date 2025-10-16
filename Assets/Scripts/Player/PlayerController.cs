@@ -13,34 +13,21 @@ namespace Player
     public class PlayerController : MonoBehaviour, INetworkObjectInitializer
     {
         //Required Components
-        [SerializeField, Required, HideProperty]
-        private CharacterController _characterController;
-
-        [SerializeField, Required, HideProperty]
-        private CinemachineCamera _playerCamera;
-
-        [SerializeField, Required, HideProperty]
-        private GameObject _playerGameObject;
-
-        [SerializeField, Required, HideProperty]
-        private GameObject _cameraTrackingTarget;
-
-        [SerializeField, Required, HideProperty]
-        private Animator _animator;
-
-        [SerializeField, FoldoutGroup("Requried Components", nameof(_characterController), nameof(_playerCamera), nameof(_playerGameObject), nameof(_cameraTrackingTarget), nameof(_animator))]
-        private EditorAttributes.Void RequiredComponentsGroup;
+        [SerializeField, Required, HideProperty] private CharacterController _characterController;
+        [SerializeField, Required, HideProperty] private CinemachineCamera _playerCamera;
+        [SerializeField, Required, HideProperty] private GameObject _playerGameObject;
+        [SerializeField, Required, HideProperty] private GameObject _cameraTrackingTarget;
+        [SerializeField, Required, HideProperty] private Animator _animator;
+        [SerializeField, Required, HideProperty] private AnimationController _animationController;
+        [SerializeField, FoldoutGroup("Requried Components", nameof(_characterController), nameof(_playerCamera), nameof(_playerGameObject), nameof(_cameraTrackingTarget), nameof(_animator), nameof(_animationController))] private EditorAttributes.Void RequiredComponentsGroup;
 
 
         //Grounded Movement Fields
         public float CurrentSpeed { get; private set; } = 0.0f;
 
-        [SerializeField, HideProperty]
-        private float _maxWalkSpeed = 5.0f;
-        [SerializeField, HideProperty]
-        private float _maxSprintSpeed = 10.0f;
-        [SerializeField, HideProperty]
-        private float _acceleration = 5.0f;
+        [SerializeField, HideProperty] private float _maxWalkSpeed = 5.0f;
+        [SerializeField, HideProperty] private float _maxSprintSpeed = 10.0f;
+        [SerializeField, HideProperty] private float _acceleration = 5.0f;
 
         private bool _isDashing = false;
         private Vector3 _dashDirection = Vector3.zero;
@@ -81,13 +68,6 @@ namespace Player
         public event Action PlayerLanded;
         public event Action PlayerJumped;
 
-
-        public float maxPitchAngle = 45f;
-        public float rotationStrength = 1.0f;
-
-        [SerializeField] Transform _shoulderTransform;
-        [SerializeField] Transform _handTransform;
-
         private void Awake()
         {
             if (_characterController == null)
@@ -125,21 +105,13 @@ namespace Player
 
         private void Attack(InputAction.CallbackContext context)
         {
-            Debug.Log("Attack perrformed");
-            if (!_animator.GetBool("WeaponReady"))
-            {
-                _animator.SetBool("WeaponReady", true);
-                Debug.Log("Weapon not ready");
-                return;
-            }
-            _animator.SetTrigger("Attack");
+            _animationController.Attack();
         }
 
         private void Update()
         {
             MovePlayer();
             JumpAndFall();
-            //AlignPlayerWithCamera();
         }
 
         private void LateUpdate()
@@ -158,34 +130,6 @@ namespace Player
             float playerRotationSpeed = Mathf.Min(_baseCameraRotFollowSpeed + angleDiff * _rotationSpeedScaling, _maxCameraRotFollowSpeed);
 
             _playerGameObject.transform.rotation = Quaternion.Slerp(_playerGameObject.transform.rotation, targetRot, Time.deltaTime * 10);
-
-            //_playerGameObject.transform.position = _playerGameObject.transform.position.NewZ(_playerCamera.transform.position.z - 0.15f);
-            //_playerGameObject.SetEulerRotationY(_playerCamera.transform.rotation.eulerAngles.y);
-
-            /*var cameraForward = Camera.main.transform.forward;
-            cameraForward.y = 0;
-            cameraForward.Normalize();
-
-            _playerGameObject.transform.forward = cameraForward;*/
-
-
-            //float currentPitch = GetPitch(_playerCamera.transform.forward);
-            //float pitchDelta = currentPitch - _initialCameraPitch;
-            
-            //Quaternion shoulderRotation = Quaternion.AngleAxis(pitchDelta * 1, _shoulderTransform.right);
-            //_shoulderTransform.rotation = shoulderRotation * _initialShoulderRotation;
-
-
-
-            //float cameraPitch = _playerCamera.transform.localEulerAngles.x;
-            //if (cameraPitch > 180f)
-                //cameraPitch -= 360f;
-
-            //float pitchOffset = Mathf.Clamp(cameraPitch, -maxPitchAngle, maxPitchAngle) * rotationStrength;
-
-            //Quaternion pitchRotation = Quaternion.AngleAxis(pitchOffset, Vector3.right);
-            //Quaternion pitchRotation = Quaternion.Euler(pitchOffset, 0f, 0f);
-            //_shoulderTransform.rotation = _startingShoulderOrientation * pitchRotation;
         }
 
         private float GetPitch(Vector3 forward)
@@ -195,49 +139,6 @@ namespace Player
             float pitch = Vector3.SignedAngle(flatForward, forward, _playerCamera.transform.right);
             return pitch;
         }
-
-        /*private void MovePlayer()
-        {
-            Vector2 movementInputs = ControlInputManagerV2.Instance.MovementInput.action.ReadValue<Vector2>();
-
-            if (!GhostInputsHandled)
-            {
-                InputSystem.ResetDevice(Keyboard.current);
-                InputSystem.ResetDevice(Joystick.current);
-                GhostInputsHandled = true;
-            }
-
-            float targetSpeed;
-            if (_characterController.isGrounded)
-                targetSpeed = ControlInputManagerV2.Instance.SprintInput.action.IsPressed() ? _maxSprintSpeed : _maxWalkSpeed;
-            else
-                targetSpeed = CurrentSpeed;
-
-            Vector3 inputDirection = new Vector3(movementInputs.x, 0.0f, movementInputs.y).normalized;
-
-            if (movementInputs != Vector2.zero)
-            {
-                var cameraForward = _playerCamera.transform.forward;
-                cameraForward.y = 0.0f;
-                var cameraRight = _playerCamera.transform.right;
-                cameraRight.y = 0.0f;
-
-                inputDirection = cameraRight.normalized * movementInputs.x + cameraForward.normalized * movementInputs.y;
-            }
-            else
-            {
-                targetSpeed = 0.0f;
-            }
-
-            if (CurrentSpeed != targetSpeed)
-            {
-                CurrentSpeed = Mathf.Lerp(CurrentSpeed, targetSpeed, Time.deltaTime * _acceleration);
-                CurrentSpeed = Mathf.Round(CurrentSpeed * 1000f) / 1000f;
-                //CurrentSpeed += _acceleration * Time.deltaTime * (CurrentSpeed < targetSpeed ? 1 : -1);
-            }
-
-            _characterController.Move(inputDirection.normalized * CurrentSpeed * Time.deltaTime + (new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime));
-        }*/
 
         private void MovePlayer()
         {

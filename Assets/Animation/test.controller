@@ -66,6 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e5c34b04d584a4db8bd8be06101638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  _animationController: {fileID: 0}
 --- !u!1102 &-8598009068313796346
 AnimatorState:
   serializedVersion: 6
@@ -152,8 +153,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -4891762612636048018}
-  m_StateMachineBehaviours:
-  - {fileID: -8693722745687747014}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -182,7 +182,7 @@ AnimatorStateMachine:
     m_Position: {x: 420, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3408952721743281510}
-    m_Position: {x: 420, y: 10, z: 0}
+    m_Position: {x: 570, y: -20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3595499294174579516}
     m_Position: {x: 680, y: 110, z: 0}
@@ -257,7 +257,7 @@ AnimatorController:
     m_BlendingMode: 1
     m_SyncedLayerIndex: -1
     m_DefaultWeight: 1
-    m_IKPass: 0
+    m_IKPass: 1
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
@@ -452,8 +452,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 4734066648313064411}
-  m_StateMachineBehaviours:
-  - {fileID: 8007833188609775715}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -480,6 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e5c34b04d584a4db8bd8be06101638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackAnimController
+  _animationController: {fileID: 0}
 --- !u!1107 &8844493299244806102
 AnimatorStateMachine:
   serializedVersion: 6
