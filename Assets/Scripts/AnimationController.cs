@@ -39,8 +39,8 @@ public class AnimationController : MonoBehaviour
 
     private IEnumerator SwingLeft()
     {
-        Func<IEnumerator> leftSwingReset = () => ProceduralAttackAnimation(_swingLeftReset, _swingLeft.EndPos, Quaternion.Euler(_swingLeft.EndEulerOrientation));
-        Func<IEnumerator> leftSwing = () => ProceduralAttackAnimation(_swingLeft, _swingLeftPrep.EndPos, Quaternion.Euler(_swingLeftPrep.EndEulerOrientation), leftSwingReset);
+        Func<IEnumerator> leftSwingReset = () => ProceduralAttackAnimation(_swingLeftReset, _swingLeft.EndTransform.localPosition, _swingLeft.EndTransform.localRotation);
+        Func<IEnumerator> leftSwing = () => ProceduralAttackAnimation(_swingLeft, _swingLeftPrep.EndTransform.localPosition, _swingLeftPrep.EndTransform.localRotation, leftSwingReset);
         StartCoroutine(ProceduralAttackAnimation(_swingLeftPrep, _startingHandTargetPos, _startingHandTargetOrientation, leftSwing));
 
         yield return null;
@@ -49,13 +49,13 @@ public class AnimationController : MonoBehaviour
     [Button]
     private void SetStartPose()
     {
-        _handTarget.SetLocalPositionAndRotation(_swingLeftPrep.EndPos, Quaternion.Euler(_swingLeftPrep.EndEulerOrientation));
+        _handTarget.SetLocalPositionAndRotation(_swingLeftPrep.EndTransform.localPosition, _swingLeftPrep.EndTransform.localRotation);
     }
 
     [Button]
     private void SetEndPose()
     {
-        _handTarget.SetLocalPositionAndRotation(_swingLeft.EndPos, Quaternion.Euler(_swingLeft.EndEulerOrientation));
+        _handTarget.SetLocalPositionAndRotation(_swingLeft.EndTransform.localPosition, _swingLeft.EndTransform.localRotation);
     }
 
     //Vector3(0.286000013,-0.268999994,0.316000015)
@@ -64,15 +64,14 @@ public class AnimationController : MonoBehaviour
     private IEnumerator ProceduralAttackAnimation(ProceduralAttackAnimation anim, Vector3 startPos, Quaternion startRot, Func<IEnumerator> followUp = null)
     {
         var elapsedTime = 0f;
-        var endRot = Quaternion.Euler(anim.EndEulerOrientation);
 
         while (elapsedTime < anim.Length)
         {
             var animCompletion = elapsedTime / anim.Length;
             var interp = (anim.Curve != null) ? anim.Curve.Evaluate(animCompletion) : Mathf.SmoothStep(0, 1, animCompletion);
             _handTarget.SetLocalPositionAndRotation(
-                Vector3.Lerp(startPos, anim.EndPos, interp),
-                Quaternion.Slerp(startRot, endRot, interp));
+                Vector3.Lerp(startPos, anim.EndTransform.localPosition, interp),
+                Quaternion.Slerp(startRot, anim.EndTransform.localRotation, interp));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -85,8 +84,7 @@ public class AnimationController : MonoBehaviour
 [Serializable]
 public class ProceduralAttackAnimation
 {
-    [field: SerializeField] public Vector3 EndPos { get; private set; }
-    [field: SerializeField] public Vector3 EndEulerOrientation { get; private set; }
+    [field: SerializeField] public Transform EndTransform { get; private set; }
 
     [field: SerializeField] public float Length { get; private set; } = 0.3f;
     [field: SerializeField] public AnimationCurve Curve {  get; private set; }
