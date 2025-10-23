@@ -116,7 +116,7 @@ namespace Player
 
         private void LateUpdate()
         {
-            AlignPlayerWithCamera();
+            //AlignPlayerWithCamera();
         }
 
         private void AlignPlayerWithCamera()
