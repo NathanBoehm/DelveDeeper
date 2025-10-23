@@ -3,6 +3,7 @@ using NUnit;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -74,6 +75,18 @@ public class AnimationController : MonoBehaviour
         }
     }
 
+    public void Walk()
+    {
+        _playerCameraManager.PlayWalkNoise();
+        _animator.SetBool("Walking", true);
+    }
+
+    public void StopWalk()
+    {
+        _playerCameraManager.StopWalkNoise();
+        _animator.SetBool("Walking", false);
+    }
+
     private void SwingRight()
     {
         _state = State.SwingRight;
@@ -130,9 +143,9 @@ public class AnimationController : MonoBehaviour
     {
         _state = State.SwingLeftDown;
 
-        Func<IEnumerator> leftDownSwingReset = () => ProceduralAttackAnimation(_swingLeftDownReset);
-        Func<IEnumerator> leftDownSwing = () => ProceduralAttackAnimation(_swingLeftDown);
-        Func<IEnumerator> leftDownSwingPrep = () => ProceduralAttackAnimation(_swingLeftDownPrep);
+        Func<IEnumerator> leftDownSwingReset = () => ProceduralAttackAnimation(_swingLeftDownReset, _playerCameraManager.PlayMainCamera);
+        Func<IEnumerator> leftDownSwing = () => ProceduralAttackAnimation(_swingLeftDown, _playerCameraManager.PlaySwingDownLeftCamera);
+        Func<IEnumerator> leftDownSwingPrep = () => ProceduralAttackAnimation(_swingLeftDownPrep, _playerCameraManager.PlaySwingDownLeftPrepCamera);
 
         if (_animActions.Count > 0)
         {

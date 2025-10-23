@@ -13,6 +13,10 @@ public class PlayerCameraManager : MonoBehaviour, INetworkObjectInitializer
     [SerializeField, Required] private CinemachineCamera _leftSwingCamera;
     [SerializeField, Required] private CinemachineCamera _rightSwingPrepCamera;
     [SerializeField, Required] private CinemachineCamera _rightSwingCamera;
+    [SerializeField, Required] private CinemachineCamera _leftDownSwingPrepCamera;
+    [SerializeField, Required] private CinemachineCamera _leftDownSwingCamera;
+    [SerializeField] CinemachineBasicMultiChannelPerlin _walkNoise;
+
     private List<CinemachineCamera> AllCameras;
 
     //[SerializeField] private CinemachineBrain _brain;
@@ -31,7 +35,9 @@ public class PlayerCameraManager : MonoBehaviour, INetworkObjectInitializer
             _mainCamera,
             _leftSwingPrepCamera,
             _leftSwingCamera,
-            _rightSwingCamera
+            _rightSwingCamera,
+            _leftDownSwingPrepCamera,
+            _leftDownSwingCamera,
         };
     }
 
@@ -69,6 +75,28 @@ public class PlayerCameraManager : MonoBehaviour, INetworkObjectInitializer
         //_leftSwingCamera.Priority = 0;
         //_rightSwingCamera.Priority =
         _rightSwingCamera.Priority = 1;
+    }
+
+    public void PlaySwingDownLeftPrepCamera()
+    {
+        AllCameras.ForEach(c => c.Priority = 0);
+        _leftDownSwingPrepCamera.Priority = 1;
+    }
+
+    public void PlaySwingDownLeftCamera()
+    {
+        AllCameras.ForEach(C => C.Priority = 0);
+        _leftDownSwingCamera.Priority = 1;
+    }
+
+    public void PlayWalkNoise()
+    {
+        _walkNoise.enabled = true;
+    }
+
+    public void StopWalkNoise()
+    {
+        _walkNoise.enabled = false;
     }
 
     public void Initialize()

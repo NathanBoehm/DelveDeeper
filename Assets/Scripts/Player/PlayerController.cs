@@ -5,6 +5,7 @@ using Managers;
 using System;
 using EditorAttributes;
 using System.Collections;
+using MoreMountains.Feedbacks;
 
 
 namespace Player
@@ -62,6 +63,10 @@ namespace Player
         private float _gravity = -10.0f;
         [SerializeField]
         private float _jumpHeight = 1.0f;
+
+        [Header("Feedbacks")]
+        [SerializeField]
+        private MMF_Player _walkFeedback;
 
         private float _verticalVelocity;
 
@@ -165,12 +170,14 @@ namespace Player
 
                     inputDirection = cameraRight.normalized * _currentSpeedRight + cameraForward.normalized * _currentSpeedForward;
                     CurrentSpeed = inputDirection.magnitude;
-                    _animator.SetBool("Walking", true);
+                    //_walkFeedback?.PlayFeedbacks();
+                    _animationController.Walk();
                 }
                 else
                 {
-                    CurrentSpeed = 0; 
-                    _animator.SetBool("Walking", false);
+                    CurrentSpeed = 0;
+                    //_walkFeedback?.StopFeedbacks();
+                    _animationController.StopWalk();
                 }
 
                 JumpDirection = inputDirection; //preserve current direction in case player jumps this frame
