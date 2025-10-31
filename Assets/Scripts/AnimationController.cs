@@ -22,6 +22,8 @@ public class AnimationController : MonoBehaviour
     [SerializeField] Transform _handTarget;
     [SerializeField] Animator _animator;
     [SerializeField, Required] PlayerCameraManager _playerCameraManager;
+    [SerializeField, Required] TrailRenderer _trailRenderer;
+    [SerializeField, Required] AudioSource _audioSource;
 
     [SerializeField] ProceduralAttackAnimation _swingLeftPrep;
     [SerializeField] ProceduralAttackAnimation _swingLeft;
@@ -79,6 +81,11 @@ public class AnimationController : MonoBehaviour
     {
         _playerCameraManager.PlayWalkNoise();
         _animator.SetBool("Walking", true);
+    }
+
+    public void Run()
+    {
+        _playerCameraManager.PlayRunNosie();
     }
 
     public void StopWalk()
@@ -180,6 +187,14 @@ public class AnimationController : MonoBehaviour
 
     private IEnumerator ProceduralAttackAnimation(ProceduralAttackAnimation anim, Action effect = null)
     {
+        if (anim.RenderTrail)
+            _trailRenderer.enabled = true;
+        else
+            _trailRenderer.enabled = false;
+
+        if (anim.Sound != null) 
+            _audioSource.PlayOneShot(anim.Sound);
+
         var startPos = _handTarget.localPosition;
         var startRot = _handTarget.localRotation;
 
@@ -319,6 +334,8 @@ public class ProceduralAttackAnimation
     [field: SerializeField] public Transform EndTransform { get; private set; }
     [field: SerializeField] public float Length { get; private set; } = 0.3f;
     [field: SerializeField] public AnimationCurve Curve { get; private set; }
+    [field: SerializeField] public AudioClip Sound { get; private set; }
     [field: SerializeField] public float EndDelay { get; private set; } = 0f;
     [field: SerializeField] public bool IsAnimStart { get; private set; } = false;
+    [field: SerializeField] public bool RenderTrail { get; private set; } = false;
 }

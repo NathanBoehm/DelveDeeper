@@ -14,20 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.NoiseSettings
   PositionNoise:
   - X:
-      Frequency: 1
+      Frequency: 1.4
       Amplitude: 0.01
       Constant: 1
     Y:
-      Frequency: 1
-      Amplitude: 0.05
+      Frequency: 1.6
+      Amplitude: 0.03
       Constant: 1
     Z:
-      Frequency: 1
+      Frequency: 0
       Amplitude: 0.01
       Constant: 1
   OrientationNoise:
   - X:
-      Frequency: 0
+      Frequency: 1.4
       Amplitude: 0
       Constant: 0
     Y:
@@ -35,6 +35,6 @@ MonoBehaviour:
       Amplitude: 0
       Constant: 0
     Z:
-      Frequency: 1
-      Amplitude: 0.01
+      Frequency: 1.4
+      Amplitude: 0
       Constant: 0

@@ -171,7 +171,7 @@ namespace Player
                     inputDirection = cameraRight.normalized * _currentSpeedRight + cameraForward.normalized * _currentSpeedForward;
                     CurrentSpeed = inputDirection.magnitude;
                     //_walkFeedback?.PlayFeedbacks();
-                    _animationController.Walk();
+                    if (ControlInputManager.Instance.SprintInput.action.IsPressed()) _animationController.Run(); else _animationController.Walk();
                 }
                 else
                 {

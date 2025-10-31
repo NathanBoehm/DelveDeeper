@@ -91,12 +91,20 @@ public class PlayerCameraManager : MonoBehaviour, INetworkObjectInitializer
 
     public void PlayWalkNoise()
     {
+        _walkNoise.FrequencyGain = 1;
         _walkNoise.enabled = true;
     }
 
     public void StopWalkNoise()
     {
         _walkNoise.enabled = false;
+    }
+
+    public void PlayRunNosie()
+    {
+        _walkNoise.FrequencyGain = 1.5f;
+        _walkNoise.AmplitudeGain = 2f;
+        _walkNoise.enabled = true;
     }
 
     public void Initialize()
