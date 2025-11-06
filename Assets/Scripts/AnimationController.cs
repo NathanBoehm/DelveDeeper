@@ -188,9 +188,9 @@ public class AnimationController : MonoBehaviour
     private IEnumerator ProceduralAttackAnimation(ProceduralAttackAnimation anim, Action effect = null)
     {
         if (anim.RenderTrail)
-            _trailRenderer.enabled = true;
+            _trailRenderer.emitting = true;
         else
-            _trailRenderer.enabled = false;
+            _trailRenderer.emitting = false;
 
         if (anim.Sound != null) 
             _audioSource.PlayOneShot(anim.Sound);
