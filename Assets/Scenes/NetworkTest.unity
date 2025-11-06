@@ -105212,10 +105212,10 @@ MonoBehaviour:
   _cameraTrackingTarget: {fileID: 612950956}
   _animator: {fileID: 472492625}
   _animationController: {fileID: 1355985840}
-  _maxWalkSpeed: 5
-  _maxSprintSpeed: 10
+  _maxWalkSpeed: 4
+  _maxSprintSpeed: 8
   _acceleration: 5
-  _dashSpeed: 15
+  _dashSpeed: 12
   _dashLength: 0.2
   _baseCameraRotFollowSpeed: 8
   _rotationSpeedScaling: 0.5
@@ -105462,7 +105462,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    <Sound>k__BackingField: {fileID: 8300000, guid: 978ee0823a6d94a16873d9a26c284201, type: 3}
+    <Sound>k__BackingField: {fileID: 8300000, guid: a74684f992ded407fa6d837dba58dead, type: 3}
     <EndDelay>k__BackingField: 0.1
     <IsAnimStart>k__BackingField: 0
     <RenderTrail>k__BackingField: 1
@@ -105555,7 +105555,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    <Sound>k__BackingField: {fileID: 8300000, guid: 0c2c65e19daec466f85a3c484dabc53c, type: 3}
+    <Sound>k__BackingField: {fileID: 8300000, guid: 062910c3da45f420f96c7daa2efbc62d, type: 3}
     <EndDelay>k__BackingField: 0
     <IsAnimStart>k__BackingField: 0
     <RenderTrail>k__BackingField: 1
@@ -105679,7 +105679,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    <Sound>k__BackingField: {fileID: 8300000, guid: 5fa19770e72df436193143c70e5a23c6, type: 3}
+    <Sound>k__BackingField: {fileID: 8300000, guid: b8725c3c9be684543bdb9479ee973c60, type: 3}
     <EndDelay>k__BackingField: 0
     <IsAnimStart>k__BackingField: 0
     <RenderTrail>k__BackingField: 1
